@@ -61,7 +61,6 @@ int main(int argc, char* argv[]) {
     if (argc < 2) {
         printf("Please specify input file\n");
         return -1;
-
     }
     std::string filename = argv[1];
     std::vector<std::vector<bool>> treeField = formTreeField(filename);
