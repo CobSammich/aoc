@@ -1,6 +1,7 @@
 test.txt
 puzzle.txt
 credentials.txt
+*.txt
 
 part1
 part2
