@@ -4,7 +4,6 @@
 #include <sstream>
 #include <ctype.h>
 
-
 /*
  * There are 8 fields per record. The only field that can be empty is the
  * "cid" field. So, there are 3? cases
