@@ -81,5 +81,4 @@ int main(int argc, char* argv[]) {
     std::cout << "Answer: " << product << std::endl;
 
     return 0;
-
 }
