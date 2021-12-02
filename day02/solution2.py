@@ -2,13 +2,13 @@
 Implementation for AOC 2021 Day 2 Problem 1
 """
 
-from typing import List
+from typing import List, Tuple
 import sys
-import pdb
 
 def read_input(filename: str) -> List[int]:
     """
-    Reads the sonar measurements file and formats it into ints.
+    Reads the movement log and outputs as a list of [str, int] with the format:
+    [movement direction, units]
     """
     with open(filename) as f:
         lines = f.readlines()
@@ -21,7 +21,13 @@ def read_input(filename: str) -> List[int]:
 
 def solve(data) -> int:
     """
+    Given data in the form [[str, int], ...] calculate the distance moved in both the horizontal
+    plane and the vertical plane. Vertical plane being depth. Multiplying your x and y displacements
+    gives you the answer.
 
+    In this case, however, the 'down' and 'up' movements actually change the "aim" (direction) the
+    submarine is looking. These don't have any units, but when you make a "forward" move you make a
+    depth movement of (aim * movement units).
     """
     xpos = 0
     ypos = 0
@@ -31,10 +37,8 @@ def solve(data) -> int:
             xpos += move[1]
             ypos += move[1]*aim
         elif move[0] == "down":
-            #ypos += move[1]
             aim += move[1]
         elif move[0] == "up":
-            #ypos -= move[1]
             aim -= move[1]
         else:
             print(f"Invalid Movement: {move[0]}")
@@ -43,7 +47,7 @@ def solve(data) -> int:
 def main():
     data = read_input(sys.argv[1])
     answer = solve(data)
-    print(f"The answer is: {answer}.")
+    print(f"The answer is: {answer}")
 
 if __name__ == "__main__":
     main()
