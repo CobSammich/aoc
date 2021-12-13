@@ -7,32 +7,6 @@ import sys
 import numpy as np
 import ipdb
 
-class LanternFish:
-    """
-    A lanternfish object. The 'days' variable determines how many days until it reproduces.
-    """
-    def __init__(self, days: int):
-        """
-        days is the number of days until it reproduces
-        """
-        self.days = days
-
-    def __str__(self) -> str:
-        """ Defines print information for Vent points """
-        s = f"LanternFish: {self.days} until it reproduces."
-        return s
-
-    def age(self) -> bool:
-        """
-        Makes the days to reproduce of the lanternfish decrease by one and returns whether it should
-        produce a new lanternfish or not.
-        """
-        self.days -= 1
-        if self.days == -1:
-            self.days = 6
-            return True
-        return False
-
 def read_input(filename: str) -> List[int]:
     """
     Returns a 1D array of the lanternfish ages
