@@ -1,4 +1,4 @@
-// Advent of Code 2021 Day 2 part 1
+// Advent of Code 2021 Day 2 part 2
 // Written by Jacob Morris (jacobm3@vt.edu)
 
 use std::fs::File; // File I/O
@@ -54,6 +54,7 @@ fn read_input(filename: String) -> Vec<Command> {
 fn solve(commands: Vec<Command>) -> u32 {
     let mut xpos = 0;
     let mut ypos = 0;
+    let mut aim = 0;
 
     // iterate over all commands
     for command in commands {
@@ -61,12 +62,13 @@ fn solve(commands: Vec<Command>) -> u32 {
         // handle positions based on direction
         if command.direction == "forward" {
             xpos += command.length;
+            ypos += aim * command.length
         }
         else if command.direction == "down" {
-            ypos += command.length;
+            aim += command.length;
         }
         else if command.direction == "up" {
-            ypos -= command.length;
+            aim -= command.length;
         }
         else {
             println!("Invalid movement: {}", command.direction)
