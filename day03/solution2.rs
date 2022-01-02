@@ -1,10 +1,6 @@
 // Advent of Code 2021 Day 2 part 1
 // Written by Jacob Morris (jacobm3@vt.edu)
 
-// In hindsight, I think it would have made more sense to make each bit array (one line from the
-// input) a struct that implements the `flip_bits` and `binary_to_decimal` functions instead of
-// them being standalone
-
 use std::fs::File; // File I/O
 use std::env; // Read command line args
 use std::io::{prelude::*, BufReader};
@@ -42,33 +38,6 @@ fn string_to_bit(c: char) -> bool {
     return c == '1';
 }
 
-// Transpose vector of vectors:
-// https://stackoverflow.com/questions/64498617/how-to-transpose-a-vector-of-vectors-in-rust
-fn transpose<T>(v: Vec<Vec<T>>) -> Vec<Vec<T>>
-where
-    T: Clone,
-{
-    assert!(!v.is_empty());
-    (0..v[0].len())
-        .map(|i| v.iter().map(|inner| inner[i].clone()).collect::<Vec<T>>())
-        .collect()
-}
-
-fn find_most_common_bit(bits: Vec<bool>) -> bool {
-    // keep track of bit frequencies
-    let mut count0 = 0;
-    let mut count1 = 0;
-
-    for bit in bits {
-        if bit { count1 += 1 }
-        else { count0 += 1 }
-    }
-    //println!("0's: {}, 1's: {}", count0, count1);
-    // return the most frequent bit
-    // TODO how to handle equal?
-    return count1 > count0;
-}
-
 fn binary_to_decimal(binary_array: &Vec<bool>) -> u32 {
     // example:
     // 16 8 4 2 1
@@ -101,34 +70,78 @@ fn flip_bits(bits: Vec<bool>) -> Vec<bool> {
     return flipped;
 }
 
-// find the binary array representing the gamma rate
-fn find_gamma_rate(diagnostic_report: Vec<Vec<bool>>) -> Vec<bool> {
-    println!("== Computing Gamma Rate ==");
-    // gamma rate represented as a vector of bits
-    let mut gamma_rate: Vec<bool> = Vec::new();
-    // transpose the diagnostic report so we can deal with one relevant vector at a time
-    let transposed_dr = transpose(diagnostic_report);
-    for bits in transposed_dr {
-        let dominant_bit = find_most_common_bit(bits);
-        gamma_rate.push(dominant_bit);
+fn xor(x: bool, y: bool) -> bool {
+    //returns the result of an xor between two boolean values
+    return x ^ y;
+}
+
+fn rating(diagnostic_report: &Vec<Vec<bool>>, depth: usize, bias: bool) -> Vec<bool> {
+    // diagnostic_report: Vec<>Vec<bool> - 2D bit array
+    // depth: u32 - the vector index to get
+    // bias: bool - bias towards 0 or 1 values bits
+    // there is only one bit vector left -- this is the answer
+    if diagnostic_report.len() == 1 {
+        return diagnostic_report.get(0)
+            .expect("Could not get final bit vector").to_vec();
     }
-    println!("{:?}", gamma_rate);
-    return gamma_rate;
+
+    // store the bit arrays that begin with 0 and 1
+    let mut zeros: Vec<Vec<bool>> = Vec::new();
+    let mut ones: Vec<Vec<bool>> = Vec::new();
+
+    // split the diagnostic_report into two vectors containing lines that start with 0 and lines
+    // that start with 1
+    for bits in diagnostic_report {
+        // get the bit to focus
+        let curr_bit = bits.get(depth)
+            .expect("Could not read Value from vector (Likely index is not accessible)");
+        // add to zeros or ones
+        if *curr_bit {
+            ones.push(bits.clone());
+        }
+        else {
+            zeros.push(bits.clone());
+        }
+    }
+    // get lengths of vectors
+    let n_ones = ones.len();
+    let n_zeros = zeros.len();
+    let biased: Vec<Vec<bool>>;
+    if bias {
+        biased = ones.clone();
+    }
+    else {
+        biased = zeros.clone();
+    }
+
+    // now pass the desired array back trhough the function recursively
+    if n_ones == n_zeros {
+        return rating(&biased, depth + 1, bias);
+    }
+    else if xor(n_ones > n_zeros, !bias) {
+        return rating(&ones, depth + 1, bias);
+    }
+    else if xor(n_ones < n_zeros, !bias) {
+        return rating(&zeros, depth + 1, bias);
+    }
+    // this is bad practive, but it should never reach this line
+    return Vec::new();
 }
 
 // count the horizontal and vertical positions and get their product
 fn solve(diagnostic_report: Vec<Vec<bool>>) -> u32 {
-    // gamma rate is found by the most common bit in each position
-    let gamma_rate = find_gamma_rate(diagnostic_report);
-    // binary to decimal: (pass in reference so ownership stays in this scope)
-    let gamma_value = binary_to_decimal(&gamma_rate);
-    // in this case, epsilon rate is just the opposite of the gamma rate
-    let epsilon_rate = flip_bits(gamma_rate);
-    let epsilon_value = binary_to_decimal(&epsilon_rate);
-    println!("Gamma Rate: {}", gamma_value);
-    println!("Epsilon Rate: {}", epsilon_value);
+    println!("==Computing Oxygen and CO2 report==");
+    let oxygen: Vec<bool> = rating(&diagnostic_report, 0, false);
+    let co2: Vec<bool>  = rating(&diagnostic_report, 0, true);
+    println!("Oxygen Rating: {:?}", oxygen);
+    println!("CO2 Rating: {:?}", co2);
+    // convert binary arrays to decimal value
+    let oxygen_rating = binary_to_decimal(&oxygen);
+    let co2_rating = binary_to_decimal(&co2);
+    println!("Oxygen Value: {:?}", oxygen_rating);
+    println!("CO2 Value: {:?}", co2_rating);
     // answer is the product of both rates
-    return gamma_value * epsilon_value;
+    return oxygen_rating * co2_rating;
 }
 
 fn main() {
