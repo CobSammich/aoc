@@ -2,12 +2,13 @@
 Implementation for AOC 2021 Day 2 Problem 1
 """
 
-from typing import List, Tuple
+from typing import Any, Callable
 import sys
 import numpy as np
+import ipdb
 
 
-def read_input(filename: str) -> List[int]:
+def read_input(filename: str) -> np.ndarray:
     """
     Returns a 2D array of the bits
     """
@@ -22,12 +23,13 @@ def read_input(filename: str) -> List[int]:
     bit_array = np.array(bit_array)
     return bit_array
 
-def solve(data: List[Tuple[str, int]]) -> int:
+def solve(data: np.ndarray) -> int:
     """
 
     """
     oxygen = rating(data, bias=1)[0]
     co2 = rating(data, bias=0)[0]
+    ipdb.set_trace()
     print(f"oxygen: {oxygen}")
     print(f"co2: {co2}")
 
@@ -38,7 +40,7 @@ def solve(data: List[Tuple[str, int]]) -> int:
     co2_decimal = np.sum(bit_vals * co2)
     return oxygen_decimal * co2_decimal
 
-def rating(data, depth=0, bias=1):
+def rating(data: np.ndarray, depth:int = 0, bias:int = 1) -> Any[np.ndarray, Callable]:
     """
     Recursively run through each vertical sequence of bits. Do logic until one binary array is left
     bias: 1 for oxygen, 0 for CO2

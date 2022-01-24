@@ -2,12 +2,11 @@
 Implementation for AOC 2021 Day 2 Problem 1
 """
 
-from typing import List, Tuple
 import sys
 
 import numpy as np
 
-def read_input(filename: str) -> List[int]:
+def read_input(filename: str) -> np.ndarray:
     """
     Returns a 2D array of the bits
     """
@@ -22,7 +21,7 @@ def read_input(filename: str) -> List[int]:
     bit_array = np.array(bit_array)
     return bit_array
 
-def solve(data: List[Tuple[str, int]]) -> int:
+def solve(data: np.ndarray) -> int:
     """
 
     """
