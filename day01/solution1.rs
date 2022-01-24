@@ -1,6 +1,6 @@
 // Determine the number of times number increases from the previous number.
-use std::fs::File; // File I/O
 use std::env; // Read command line args
+use std::fs::File; // File I/O
 use std::io::{prelude::*, BufReader};
 
 // Read input file and parse the each line into an int32 forming an vector
@@ -16,7 +16,7 @@ fn read_input(filename: String) -> Vec<i32> {
         .map(|line| line.unwrap().parse::<i32>().unwrap())
         .collect();
 
-    return vals
+    return vals;
 }
 
 // Count the number of time the measurements increased

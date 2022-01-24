@@ -10,6 +10,7 @@ import ipdb
 BOARD_WIDTH = 5
 BOARD_HEIGHT = 5
 
+
 def read_input(filename: str) -> Tuple[List[int], np.ndarray]:
     """
     Returns a 2D array of the bits
@@ -34,6 +35,7 @@ def read_input(filename: str) -> Tuple[List[int], np.ndarray]:
         boards[i] = new_board
     return draw_order, boards
 
+
 def check_for_winner(boards: np.ndarray, board_masks: np.ndarray) -> np.ndarray:
     """
     Returns whether each board has won or not
@@ -41,12 +43,13 @@ def check_for_winner(boards: np.ndarray, board_masks: np.ndarray) -> np.ndarray:
     winning_boards = np.zeros((len(boards)), dtype=bool)
     for board_index, board in enumerate(board_masks):
         for row in board:
-            if (row == True).all():
+            if (row is True).all():
                 winning_boards[board_index] = True
         for col in board.T:
-            if (col == True).all():
+            if (col is True).all():
                 winning_boards[board_index] = True
     return winning_boards
+
 
 def solve(draw_order, boards: np.ndarray) -> int:
     """
@@ -57,14 +60,14 @@ def solve(draw_order, boards: np.ndarray) -> int:
     for draw_idx, drawn_number in enumerate(draw_order):
         for i_board, board in enumerate(boards):
             ixs = np.where(board == drawn_number)
-            #ipdb.set_trace()
+            # ipdb.set_trace()
             if ixs is not None:
                 board_masks[i_board][ixs[0], ixs[1]] = True
 
         # check if someone has won
         winning_boards = check_for_winner(boards, board_masks)
         # Get all the losing boards
-        losing_board_indices = np.arange(len(winning_boards))[winning_boards == False]
+        losing_board_indices = np.arange(len(winning_boards))[winning_boards is False]
         if len(losing_board_indices) == 1:
             # Get the final remaining board
             losing_board = boards[losing_board_indices]
@@ -80,14 +83,15 @@ def solve(draw_order, boards: np.ndarray) -> int:
 
                 final_win = check_for_winner(losing_board, losing_board_mask)
                 if final_win:
-                    unmarked_numbers = losing_board[losing_board_mask != True]
+                    unmarked_numbers = losing_board[losing_board_mask is False]
                     return np.sum(unmarked_numbers) * drawn_number
+
 
 def main():
     draw_order, boards = read_input(sys.argv[1])
     answer = solve(draw_order, boards)
     print(f"The answer is: {answer}")
 
+
 if __name__ == "__main__":
     main()
-

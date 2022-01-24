@@ -7,6 +7,7 @@ import sys
 
 from colors import Color
 
+
 def read_input(filename: str) -> List[int]:
     """
     Reads the sonar measurements file and formats it into ints.
@@ -15,6 +16,7 @@ def read_input(filename: str) -> List[int]:
         lines = f.readlines()
     sonar_measurements = [int(line.strip()) for line in lines]
     return sonar_measurements
+
 
 def solve(sonar_measurements: List) -> int:
     """
@@ -33,11 +35,12 @@ def solve(sonar_measurements: List) -> int:
             print(f"{sonar} ({Color.RED}decreased){Color.END}")
     return n_increased
 
+
 def main():
     sonar_measurements = read_input(sys.argv[1])
     answer = solve(sonar_measurements)
     print(f"The answer is: {answer}.")
 
+
 if __name__ == "__main__":
     main()
-
