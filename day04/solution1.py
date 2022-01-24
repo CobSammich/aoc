@@ -42,10 +42,10 @@ def check_for_winner(boards: np.ndarray, board_masks: np.ndarray) -> Tuple[np.nd
     """
     for board_index, board in enumerate(board_masks):
         for row in board:
-            if (row is True).all():
+            if (row == True).all():
                 return boards[board_index], board_masks[board_index]
         for col in board.T:
-            if (col is True).all():
+            if (col == True).all():
                 return boards[board_index], board_masks[board_index]
     # No winner
     return None, None
@@ -67,7 +67,7 @@ def solve(draw_order, boards: np.ndarray) -> int:
         # check if someone has won
         winning_board, winning_board_mask = check_for_winner(boards, board_masks)
         if winning_board is not None:
-            unmarked_numbers = winning_board[winning_board_mask is False]
+            unmarked_numbers = winning_board[winning_board_mask != True]
             return np.sum(unmarked_numbers) * drawn_number
 
 
