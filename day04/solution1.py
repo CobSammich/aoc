@@ -10,6 +10,7 @@ import ipdb
 BOARD_WIDTH = 5
 BOARD_HEIGHT = 5
 
+
 def read_input(filename: str) -> Tuple[List[int], np.ndarray]:
     """
     Returns a 2D array of the bits
@@ -34,19 +35,21 @@ def read_input(filename: str) -> Tuple[List[int], np.ndarray]:
         boards[i] = new_board
     return draw_order, boards
 
+
 def check_for_winner(boards: np.ndarray, board_masks: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     """
     Returns the board, board_mask pair that has won
     """
     for board_index, board in enumerate(board_masks):
         for row in board:
-            if (row == True).all():
+            if (row is True).all():
                 return boards[board_index], board_masks[board_index]
         for col in board.T:
-            if (col == True).all():
+            if (col is True).all():
                 return boards[board_index], board_masks[board_index]
     # No winner
     return None, None
+
 
 def solve(draw_order, boards: np.ndarray) -> int:
     """
@@ -64,14 +67,15 @@ def solve(draw_order, boards: np.ndarray) -> int:
         # check if someone has won
         winning_board, winning_board_mask = check_for_winner(boards, board_masks)
         if winning_board is not None:
-            unmarked_numbers = winning_board[winning_board_mask != True]
+            unmarked_numbers = winning_board[winning_board_mask is False]
             return np.sum(unmarked_numbers) * drawn_number
+
 
 def main():
     draw_order, boards = read_input(sys.argv[1])
     answer = solve(draw_order, boards)
     print(f"The answer is: {answer}")
 
+
 if __name__ == "__main__":
     main()
-
