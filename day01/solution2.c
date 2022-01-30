@@ -1,11 +1,12 @@
 #include <stdio.h>
 
 /**
-  * This function reads the given file and determines how many relevant pieces of data are in it.
-  * In this case, every line in the file contains 1 piece of data.
-  */
-int getSizeOfData(char* filename) {
-    FILE* fp = fopen(filename, "r");
+ * This function reads the given file and determines how many relevant pieces of
+ * data are in it. In this case, every line in the file contains 1 piece of
+ * data.
+ */
+int getSizeOfData(char *filename) {
+    FILE *fp = fopen(filename, "r");
     // file could not be read
     if (fp == NULL) {
         printf("File could not be read.\n");
@@ -23,8 +24,8 @@ int getSizeOfData(char* filename) {
     return nData;
 }
 
-int readInput(char* filename, int* data) {
-    FILE* fp = fopen(filename, "r");
+int readInput(char *filename, int *data) {
+    FILE *fp = fopen(filename, "r");
     // file could not be read
     if (fp == NULL) {
         printf("File could not be read.\n");
@@ -37,16 +38,17 @@ int readInput(char* filename, int* data) {
     while (fscanf(fp, "%d", &val) == 1) {
         printf("%d\n", val);
         data[i++] = val;
-        //printf("i: %d, val: %d\n", i-1, data[i-1]);
+        // printf("i: %d, val: %d\n", i-1, data[i-1]);
     }
     return 0;
 }
 
 /**
-  * Iterates over the data and counts the number of times it has increased.
-  * windowSize determines the size of the sliding window which we compute the sum under.
-  */
-int timesIncreased(int* data, int windowSize) {
+ * Iterates over the data and counts the number of times it has increased.
+ * windowSize determines the size of the sliding window which we compute the sum
+ * under.
+ */
+int timesIncreased(int *data, int windowSize) {
     // length of array is stored as metadata in the array
     int n = data[0];
     printf("Iterating over %d items\n", n);
@@ -75,8 +77,7 @@ int timesIncreased(int* data, int windowSize) {
     return n_increased;
 }
 
-
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     if (argc < 3) {
         printf("Usage: ./s2 filename n\n");
         printf("n is the sliding window size.\n");
@@ -100,4 +101,3 @@ int main(int argc, char** argv) {
 
     return 0;
 }
-

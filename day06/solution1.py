@@ -2,15 +2,15 @@
 Implementation for AOC 2021 Day 6 Problem 1
 """
 
-from typing import List, Tuple
+from typing import List
 import sys
-import numpy as np
-import ipdb
+
 
 class LanternFish:
     """
     A lanternfish object. The 'days' variable determines how many days until it reproduces.
     """
+
     def __init__(self, days: int):
         """
         days is the number of days until it reproduces
@@ -19,8 +19,7 @@ class LanternFish:
 
     def __str__(self) -> str:
         """ Defines print information for Vent points """
-        s = f"LanternFish: {self.days} until it reproduces."
-        return s
+        return f"LanternFish: {self.days} until it reproduces."
 
     def age(self) -> bool:
         """
@@ -33,26 +32,29 @@ class LanternFish:
             return True
         return False
 
+
 def read_input(filename: str) -> List[int]:
     """
     Returns a 1D array of the lanternfish ages
     """
-    with open(filename) as f:
-        lines = f.readlines()[0] #should be only one line
+    with open(filename, encoding='utf-8', mode='r') as f:
+        lines = f.readlines()[0]  # should be only one line
 
     days = [int(s) for s in lines.strip().split(',')]
     return days
 
-def initialize_lanternfish_list(days_list: List[int]) -> np.ndarray:
+
+def initialize_lanternfish_list(days_list: List[int]) -> List[LanternFish]:
     """
     """
     fishes = []
-    for i, days in enumerate(days_list):
+    for days in days_list:
         temp_fish = LanternFish(days)
         fishes.append(temp_fish)
     return fishes
 
-def simulate_n_days(n_days: int, fishes: List[LanternFish]) -> np.ndarray:
+
+def simulate_n_days(n_days: int, fishes: List[LanternFish]) -> List[LanternFish]:
     for day in range(n_days):
         current_fishes_today = len(fishes)
         for i_fish in range(current_fishes_today):
@@ -63,21 +65,23 @@ def simulate_n_days(n_days: int, fishes: List[LanternFish]) -> np.ndarray:
                 fishes.append(new_fish)
     return fishes
 
+
 def main():
     days = read_input(sys.argv[1])
     n_days_to_simulate = int(sys.argv[2])
     fishes = initialize_lanternfish_list(days)
     for fish in fishes:
         print(fish)
-    #ipdb.set_trace()
+    # ipdb.set_trace()
     simulate_n_days(n_days_to_simulate, fishes)
-    print(f"After {n_days_to_simulate} days, there are {len(fishes)} fish.")
+    print(
+        f"After {n_days_to_simulate} days, there are {len(fishes)} fish.")
     for fish in fishes:
         print(fish)
-    #ipdb.set_trace()
+    # ipdb.set_trace()
     answer = len(fishes)
     print(f"The answer is: {answer}")
 
+
 if __name__ == "__main__":
     main()
-

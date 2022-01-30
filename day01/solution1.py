@@ -7,12 +7,11 @@ import sys
 
 from colors import Color
 
-
 def read_input(filename: str) -> List[int]:
     """
     Reads the sonar measurements file and formats it into ints.
     """
-    with open(filename) as f:
+    with open(filename, mode='r', encoding='utf-8') as f:
         lines = f.readlines()
     sonar_measurements = [int(line.strip()) for line in lines]
     return sonar_measurements
@@ -37,6 +36,9 @@ def solve(sonar_measurements: List) -> int:
 
 
 def main():
+    """
+    Driver for program
+    """
     sonar_measurements = read_input(sys.argv[1])
     answer = solve(sonar_measurements)
     print(f"The answer is: {answer}.")
