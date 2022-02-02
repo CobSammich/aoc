@@ -7,12 +7,14 @@ import sys
 import numpy as np
 import ipdb
 
+
 class Vent:
     """
     Defines two 2D points that the vent covers
 
     Could also take inputs of points where a point is P(x, y)
     """
+
     def __init__(self, x1, y1, x2, y2):
         self.x1 = x1
         self.y1 = y1
@@ -20,16 +22,15 @@ class Vent:
         self.y2 = y2
 
     def __str__(self):
-        """ Defines print information for Vent points """
-        s = f"Vent: ({self.x1},{self.y1}), ({self.x2},{self.y2})"
-        return s
+        """Defines print information for Vent points"""
+        return f"Vent: ({self.x1},{self.y1}), ({self.x2},{self.y2})"
 
     def point_coverage(self):
         """
         Computes the line between the two points, and returns them as a list of points
         """
-        diff_x = self.x2 - self.x1
-        diff_y = self.y2 - self.y1
+        #diff_x = self.x2 - self.x1
+        #diff_y = self.y2 - self.y1
         # movement of x and y per step:
         dx = self.x2 - self.x1
         dy = self.y2 - self.y1
@@ -51,23 +52,25 @@ class Vent:
             curr_y += dy
         return points
 
+
 def read_input(filename: str) -> List[Vent]:
     """
     Returns a 2D array of the bits
     """
-    with open(filename) as f:
+    with open(filename, mode='r', encoding='utf-8') as f:
         lines = f.readlines()
 
-    vents = [] # array of Vent objects
+    vents = []  # array of Vent objects
     # split " -> " into two tuples of points
-    points = [line.strip().split(' -> ') for line in lines]
+    points = [line.strip().split(" -> ") for line in lines]
     for point_pair in points:
         p1, p2 = point_pair
-        x1, y1 = [int(p) for p in p1.split(',')]
-        x2, y2 = [int(p) for p in p2.split(',')]
+        x1, y1 = [int(p) for p in p1.split(",")]
+        x2, y2 = [int(p) for p in p2.split(",")]
         curr_vent = Vent(x1, y1, x2, y2)
         vents.append(curr_vent)
     return vents
+
 
 def initialize_vent_field(vents: List[Vent]) -> np.ndarray:
     """
@@ -88,10 +91,14 @@ def initialize_vent_field(vents: List[Vent]) -> np.ndarray:
             max_y = vent.y1
         if vent.y2 > max_y:
             max_y = vent.y2
-    vent_field = np.zeros((max_y+1, max_x+1), dtype=int)
+    vent_field = np.zeros((max_y + 1, max_x + 1), dtype=int)
     return vent_field
 
-def solve(vents: List[Vent]) -> np.ndarray:
+
+def solve(vents: List[Vent]) -> int:
+    """
+    Solve
+    """
     # form vent field
     vent_field = initialize_vent_field(vents)
     # compute the line each vent covers
@@ -106,11 +113,15 @@ def solve(vents: List[Vent]) -> np.ndarray:
     answer = len(np.where(vent_field >= 2)[0])
     return answer
 
+
 def main():
+    """
+    Main driver for script
+    """
     vents = read_input(sys.argv[1])
     answer = solve(vents)
     print(f"The answer is: {answer}")
 
+
 if __name__ == "__main__":
     main()
-

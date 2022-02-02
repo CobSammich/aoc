@@ -7,6 +7,7 @@ import sys
 
 from colors import Color
 
+
 def read_input(filename: str) -> List[int]:
     """
     Reads the sonar measurements file and formats it into ints.

@@ -2,8 +2,9 @@
 Implementation for AOC 2021 Day 2 Problem 1
 """
 
-from typing import List, Tuple
 import sys
+from typing import List, Tuple
+
 
 def read_input(filename: str) -> List[int]:
     """
@@ -18,6 +19,7 @@ def read_input(filename: str) -> List[int]:
         vals[1] = int(vals[1])
         data.append(vals)
     return data
+
 
 def solve(data: List[Tuple[str, int]]) -> int:
     """
@@ -38,11 +40,12 @@ def solve(data: List[Tuple[str, int]]) -> int:
             print(f"Invalid Movement: {move[0]}")
     return xpos*ypos
 
+
 def main():
     data = read_input(sys.argv[1])
     answer = solve(data)
     print(f"The answer is: {answer}")
 
+
 if __name__ == "__main__":
     main()
-
