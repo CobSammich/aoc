@@ -51,12 +51,16 @@ def compute_fuel_cost(position: int, positions: List[int]) -> int:
     fuel_costs = []
     for curr_position in positions:
         fuel_cost = np.abs(curr_position - position)
+        fuel_cost = np.sum(np.arange(fuel_cost + 1))
+        print(f"Move from {curr_position} to {position}: {fuel_cost} fuel")
         fuel_costs.append(fuel_cost)
     return np.sum(fuel_costs)
 
 def solve(positions: List[int]) -> int:
     fuel_costs = []
-    for pos in positions:
+    # Evaluate for all midpoint positions
+    # NOTE: this is incredibly unoptimized
+    for pos in np.arange(np.min(positions), np.max(positions) + 1):
         fuel_cost = compute_fuel_cost(pos, positions)
         fuel_costs.append(fuel_cost)
     # Find where the fuel cost was the least
