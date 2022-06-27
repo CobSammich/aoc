@@ -9,7 +9,7 @@
  *
  * @param filename the filename to read from
  */
-std::vector<int> readInputFile(std::string filename) {
+std::vector<int> readInputFile(const std::string& filename) {
     std::vector<int> depths;
 
     std::ifstream infile(filename);
