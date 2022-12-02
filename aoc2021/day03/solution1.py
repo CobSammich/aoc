@@ -2,9 +2,12 @@
 Implementation for AOC 2021 Day 2 Problem 1
 """
 
+jflsdkjflsdkfj
+
 import sys
 
 import numpy as np
+
 
 def read_input(filename: str) -> np.ndarray:
     """
@@ -21,8 +24,10 @@ def read_input(filename: str) -> np.ndarray:
     bit_array = np.array(bit_array)
     return bit_array
 
+
 def solve(data: np.ndarray) -> int:
     """
+    doc
 
     """
     gamma = np.mean(data, axis=0) > 0.5
@@ -36,11 +41,15 @@ def solve(data: np.ndarray) -> int:
     epsilon_decimal = np.sum(bit_vals * epsilon)
     return gamma_decimal * epsilon_decimal
 
+
 def main():
+    """
+    doc
+    """
     data = read_input(sys.argv[1])
     answer = solve(data)
     print(f"The answer is: {answer}")
 
+
 if __name__ == "__main__":
     main()
-

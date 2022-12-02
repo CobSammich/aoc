@@ -23,7 +23,7 @@ fn read_input(filename: String) -> Vec<i32> {
 fn solve(measurements: Vec<i32>) -> i32 {
     let mut count = 0;
     // first measurement -- as there is no previous measurement
-    let mut previous_measurement = measurements[0];
+    let mut previous_measurement: i32 = measurements[0];
 
     for value in &measurements[1..] {
         if *value > previous_measurement {

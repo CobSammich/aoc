@@ -1,4 +1,5 @@
 """
+
 Implementation for AOC 2021 Day 2 Problem 1
 """
 
