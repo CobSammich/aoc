@@ -44,7 +44,6 @@ def part2(data: list[str]) -> float:
 
     sum = 0
     for line in data:
-        line_map = {}
         smallest_index = sys.maxsize
         smallest_int = 0
         largest_index = -1
