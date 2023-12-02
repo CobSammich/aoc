@@ -2,7 +2,9 @@ import argparse
 import ipdb
 
 def read_input(filename: str):
-    raise NotImplementedError()
+    with open(filename, 'r') as f:
+        data = [line.strip() for line in f.readlines()]
+    return data
 
 def part1(data):
     raise NotImplementedError()
