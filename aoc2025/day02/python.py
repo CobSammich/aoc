@@ -19,7 +19,6 @@ def part1(data):
             first_half = str_id[: len(str_id) // 2]
             second_half = str_id[len(str_id) // 2 :]
             if first_half == second_half:
-                print(f"found: {str_id}")
                 id_sum += int(str_id)
     return id_sum
 
@@ -43,7 +42,6 @@ def part2(data):
                 ]
 
                 if len(set(substrings)) == 1:
-                    print(f"found: {str_id}")
                     id_sum += int(str_id)
                     # Make sure not to count this id more than once
                     break
