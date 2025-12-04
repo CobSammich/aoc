@@ -3,3 +3,6 @@ s2
 solution1
 solution2
 __pycache__
+build
+target
+Cargo.lock

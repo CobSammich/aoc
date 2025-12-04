@@ -20,7 +20,7 @@ declare -A programming_names_dict
 programming_names_dict["c"]="./templates/c.c"
 programming_names_dict["cpp"]="./templates/cpp.cpp"
 programming_names_dict["python"]="./templates/python.py"
-programming_names_dict["rust"]="./templates/rust.rs"
+programming_names_dict["rust"]="./templates/main.rs"
 
 if ! [[ -v programming_names_dict["$file_type"] ]]; then
   echo "$file_type Not Supported"
@@ -33,6 +33,11 @@ directory_name="day$(printf "%02d" "$number")"
 # Create the directory
 mkdir "$directory_name"
 mkdir "$directory_name/data"
-cp ${programming_names_dict["$file_type"]} $directory_name
+if [[ $file_type == "rust" ]]; then
+  cargo init $directory_name
+  cp ${programming_names_dict["$file_type"]} $directory_name/src/
+else
+  cp ${programming_names_dict["$file_type"]} $directory_name
+fi
 
 #echo "Directory '$directory_name' created for programming file type '$file_type'."
