@@ -4,20 +4,78 @@ use std::fs::File;
 // File I/O
 use std::io::{prelude::*, BufReader};
 
-// Read input file and parse the each line into an int32 forming an vector
-fn read_input(filename: String) -> Vec<String> {
+#[derive(Debug)]
+struct Line {
+    direction: char,
+    magnitude: i32,
+}
+
+// Read input file and parse each line into a Line struct
+fn read_input(filename: String) -> Vec<Line> {
     println!("Reading input from {}", filename);
-    // open file
     let file = File::open(filename).expect("file not found");
     let buf = BufReader::new(file);
 
-    // Parse files into vector of ints
-    let vals: Vec<String> = buf
+    let data: Vec<Line> = buf
         .lines()
-        .map(|line| line.unwrap())
+        .filter_map(|line| {
+            let pline = line.unwrap();
+            Some(Line {
+                direction: pline.chars().next().unwrap(),
+                magnitude: pline[1..].trim().parse().unwrap(),
+            })
+        })
         .collect();
+    return data;
+}
 
-    return vals;
+fn part1(data: &Vec<Line>) -> i32 {
+    let mut dial = 50;
+    let mut num_point_at_zero = 0;
+    for line in data {
+        let mut curr_magnitude = line.magnitude;
+        if line.direction == 'L' {
+            curr_magnitude *= -1;
+        }
+
+        dial += curr_magnitude;
+        dial %= 100;
+        if dial == 0 {
+            num_point_at_zero += 1;
+        }
+    }
+    return num_point_at_zero;
+}
+
+fn part2(data: &Vec<Line>) -> i32 {
+    let mut dial = 50;
+    let mut num_pass_zero = 0;
+    for line in data {
+        println!("========");
+        println!("{} {} {}", dial, line.direction, line.magnitude);
+
+        let curr_rotation_pass_zero = line.magnitude / 100;
+        let mut curr_magnitude = line.magnitude % 100;
+        if line.direction == 'L' {
+            curr_magnitude *= -1;
+        }
+        let new_dial = (dial + curr_magnitude) % 100;
+        //println!("{} {}", curr_magnitude, curr_rotation_pass_zero);
+        println!("{}", new_dial);
+        println!("{}", (dial + curr_magnitude) % -100);
+        if new_dial == 0 {
+            num_pass_zero += 1
+        }
+        else if line.direction == 'L' && dial != 0 && new_dial > dial {
+            num_pass_zero += 1
+        }
+        else if line.direction == 'R' && dial != 0 && new_dial < dial {
+            num_pass_zero += 1
+        }
+        num_pass_zero += curr_rotation_pass_zero;
+        dial = new_dial
+    }
+    return num_pass_zero;
 }
 
 fn main() {
@@ -29,6 +87,11 @@ fn main() {
     let filename = &args[1];
 
     // don't use & so that filename is cleaned up
-    let elves: Vec<String> = read_input(String::from(filename));
-    println!("{:?}", elves);
+    let data: Vec<Line> = read_input(String::from(filename));
+
+    let p1_answer = part1(&data);
+    println!("Part 1 Answer: {}", p1_answer);
+
+    let p2_answer = part2(&data);
+    println!("Part 2 Answer: {}", p2_answer);
 }
