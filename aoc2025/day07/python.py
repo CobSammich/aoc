@@ -30,32 +30,31 @@ def part1(data: list[str]):
 
 def quantum_beam(data: list[str], beam_index: int, row: int, table: np.ndarray):
     # base case:
-    print(f"Depth: {len(data)}")
-    if len(data) == 0:
+    if row == len(data):
         return 1
     if table[row][beam_index] != 0:
         return table[row][beam_index]
-    if data[0][beam_index] == "^":
+    if data[row][beam_index] == "^":
         table[row][beam_index] = quantum_beam(
-            data[1:],
+            data,
             beam_index - 1,
             row + 1,
             table,
         ) + quantum_beam(
-            data[1:],
+            data,
             beam_index + 1,
             row + 1,
             table,
         )
     else:
-        table[row][beam_index] = quantum_beam(data[1:], beam_index, row + 1, table)
+        table[row][beam_index] = quantum_beam(data, beam_index, row + 1, table)
     return table[row][beam_index]
 
 
 def part2(data):
     beam_index = data[0].find("S")
     rows, cols = len(data), len(data[0])
-    table = np.zeros((rows, cols), dtype=np.int32)
+    table = np.zeros((rows, cols), dtype=np.int64)
     paths = quantum_beam(data, beam_index, 0, table)
     return paths
 
