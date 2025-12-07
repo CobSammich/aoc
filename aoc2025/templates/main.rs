@@ -16,13 +16,11 @@ fn read_input(filename: String) -> Vec<String> {
     return vals;
 }
 
-fn part1(data: Vec<String>) -> i32 {
-
+fn part1(data: &Vec<String>) -> i32 {
     return 0;
 }
 
-fn part2(data: Vec<String>) -> i32 {
-
+fn part2(data: &Vec<String>) -> i32 {
     return 0;
 }
 
@@ -42,5 +40,4 @@ fn main() {
 
     let p2_answer = part2(&data);
     println!("Part 2 Answer: {}", p2_answer);
-}
 }
