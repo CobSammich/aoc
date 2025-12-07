@@ -51,25 +51,25 @@ fn part2(data: &Vec<Line>) -> i32 {
     let mut dial = 50;
     let mut num_pass_zero = 0;
     for line in data {
-        println!("========");
-        println!("{} {} {}", dial, line.direction, line.magnitude);
-
         let curr_rotation_pass_zero = line.magnitude / 100;
         let mut curr_magnitude = line.magnitude % 100;
+
         if line.direction == 'L' {
             curr_magnitude *= -1;
         }
-        let new_dial = (dial + curr_magnitude) % 100;
-        //println!("{} {}", curr_magnitude, curr_rotation_pass_zero);
-        println!("{}", new_dial);
-        println!("{}", (dial + curr_magnitude) % -100);
+
+        let mut new_dial = (dial + curr_magnitude) % 100;
+        if new_dial < 0 {
+            // -18 % 100 in rust doesn't = 82, so do this
+            new_dial += 100;
+        }
+
+        // edge cases
         if new_dial == 0 {
             num_pass_zero += 1
-        }
-        else if line.direction == 'L' && dial != 0 && new_dial > dial {
+        } else if line.direction == 'L' && dial != 0 && new_dial > dial {
             num_pass_zero += 1
-        }
-        else if line.direction == 'R' && dial != 0 && new_dial < dial {
+        } else if line.direction == 'R' && dial != 0 && new_dial < dial {
             num_pass_zero += 1
         }
         num_pass_zero += curr_rotation_pass_zero;
