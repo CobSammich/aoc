@@ -7,24 +7,16 @@ def read_input(filename: str):
     return data
 
 
-def create_fresh_map(data) -> dict:
-    fresh_map = {}
-    for line in data:
-        if len(line) == 0:
-            break
-        lower, upper = line.split("-")
-        lower, upper = int(lower), int(upper)
-        for i in range(lower, upper + 1):
-            fresh_map[i] = True
-
-    return fresh_map
-
-
 def split_data(data) -> tuple[list[str], list[str]]:
     for line_id, line in enumerate(data):
         if len(line) == 0:
             return data[:line_id], data[line_id + 1 :]
     raise LookupError("Could not find empty line in data indicating split")
+
+
+def get_bounds(id_range: str) -> tuple[int, int]:
+    lower, upper = id_range.split("-")
+    return int(lower), int(upper)
 
 
 def part1(data):
@@ -33,8 +25,7 @@ def part1(data):
     for ingredient_id in id_data:
         ingredient_id = int(ingredient_id)
         for id_range in id_range_data:
-            lower, upper = id_range.split("-")
-            lower, upper = int(lower), int(upper)
+            lower, upper = get_bounds(id_range)
             if ingredient_id >= lower and ingredient_id <= upper:
                 num_fresh += 1
                 break
@@ -42,16 +33,48 @@ def part1(data):
     return num_fresh
 
 
+def in_between(val, lower, upper):
+    return val >= lower and val <= upper
+
+
+def split_bounds(id_range_data):
+    lowers, uppers = [], []
+    for id_range in id_range_data:
+        lower, upper = get_bounds(id_range)
+        lowers.append(lower)
+        uppers.append(upper)
+    return sorted(lowers), sorted(uppers)
+
+
 def part2(data):
-    fresh_map = create_fresh_map(data)
-    return sum(fresh_map.values())
-    # id_range_data, _ = split_data(data)
-    # num_fresh = 0
-    # for id_range in id_range_data:
-    #     lower, upper = id_range.split("-")
-    #     lower, upper = int(lower), int(upper)
-    #     num_fresh += upper - lower
-    # return num_fresh
+    id_range_data, _ = split_data(data)
+    num_fresh = 0
+
+    lowers, uppers = split_bounds(id_range_data)
+    combined = sorted(lowers + uppers)
+    counter = 0
+    # keep track of the first lower bound
+    curr_lower = lowers[0]
+    reconstructed_bounds = []
+    for bound in combined:
+        if len(lowers) != 0 and bound == lowers[0]:
+            counter += 1
+            lowers.remove(bound)
+        elif len(lowers) != 0 and bound == uppers[0]:
+            counter -= 1
+            uppers.remove(bound)
+
+        if counter == 0:
+            reconstructed_bounds.append((curr_lower, bound))
+            curr_lower = lowers[0]
+        if bound == combined[-1]:
+            reconstructed_bounds.append((curr_lower, bound))
+
+    num_fresh = 0
+    for bounds in reconstructed_bounds:
+        lower, upper = bounds
+        num_fresh += upper - lower + 1
+    return num_fresh
 
 
 def main(filename: str):
