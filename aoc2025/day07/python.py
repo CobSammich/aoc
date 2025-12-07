@@ -1,8 +1,6 @@
 import argparse
-import functools
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 def read_input(filename: str):
